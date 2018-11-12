@@ -1,4 +1,9 @@
 import scrapy
+from random import shuffle
+import re
+from scrapy.contrib.loader import ItemLoader
+from fuli.items import Work28
+import time
 
 
 class Work28Spider(scrapy.Spider):
@@ -10,6 +15,22 @@ class Work28Spider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        filename = response.url.split("/")[-2]
-        with open(filename, 'wb') as f:
-            f.write(response.body)
+        urls = response.xpath('//div[@class="listbody"]//a/@href').extract()
+        shuffle(urls)
+        pattern = re.compile(r'https://www.work28.com/post/[0-9]{3,7}')
+        for url in urls:
+            if pattern.search(url):
+                req = scrapy.Request(url=url,
+                                     callback=self.parse_article,
+                                     headers={'Referer': response.url}
+                                     )
+                yield req
+
+    def parse_article(self, response):
+        l = ItemLoader(item=Work28(), response=response)
+        l.add_value('spider_name', self.name)
+        l.add_xpath('title', '//h1/text()')
+        l.add_xpath('link', response.url)
+        l.add_value('datatime', int(time.time()))
+        l.add_xpath('content', '//div[@class="article_content"]/node()')
+        return l.load_item()
