@@ -1,8 +1,7 @@
 import scrapy
 from random import shuffle
 import re
-from scrapy.contrib.loader import ItemLoader
-from fuli.items import Work28
+from fuli.items import Work28, ArticleItemLoader
 import time
 
 
@@ -27,10 +26,11 @@ class Work28Spider(scrapy.Spider):
                 yield req
 
     def parse_article(self, response):
-        l = ItemLoader(item=Work28(), response=response)
+        l = ArticleItemLoader(item=Work28(), response=response)
         l.add_value('spider_name', self.name)
         l.add_xpath('title', '//h1/text()')
         l.add_value('link', response.url)
+        l.add_value('url', response.url)
         l.add_value('datatime', int(time.time()))
-        l.add_xpath('content', '//div[@class="article_content"]/node()')
+        l.add_xpath('content', '//div[@class="article_content"]')
         return l.load_item()
