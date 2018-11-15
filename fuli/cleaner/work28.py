@@ -2,7 +2,8 @@ import re
 import scrapy
 from w3lib.html import remove_tags
 from .base_extractor import BaseExtractor
-from .utils import SCRIPT_PLACEHOLDER, IMG_PLACEHOLDER, VIDEO_PLACEHOLDER
+from .utils import SCRIPT_PLACEHOLDER
+from fuli.items import NewsItem
 
 
 class Work28Extractor(BaseExtractor):
@@ -54,3 +55,13 @@ class Work28Extractor(BaseExtractor):
             contents.append(SCRIPT_PLACEHOLDER)
         return {'content': contents, 'image': images, 'video': videos,
                 'embed': embeds, 'script': scripts}
+
+    def process_item(self, resp):
+        item = NewsItem()
+        res = self.parse_article_content(resp)
+        item['content'] = res['content']
+        item['img_src'] = res.get('image', [])
+        item['video_src'] = res['video']
+        item['embed_html'] = res.get('embed', [])
+        item['script_src'] = list(set(res.get('script', [])))
+        return item
