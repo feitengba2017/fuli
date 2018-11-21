@@ -3,7 +3,7 @@ import scrapy
 from w3lib.html import remove_tags
 from .base_extractor import BaseExtractor
 from .utils import SCRIPT_PLACEHOLDER
-from fuli.items import NewsItem
+from fuli.newitem import NewsItem
 
 
 class Work28Extractor(BaseExtractor):
@@ -19,9 +19,7 @@ class Work28Extractor(BaseExtractor):
         embeds, ecount = [], 1
         nodes = []
 
-        nodes.extend(resp.css('.photo__ratio-enforced').xpath('node()').extract())
-        nodes.extend(resp.css('.media-gallery__slider').xpath('node()').extract())
-        nodes.extend(resp.css('.article-body>.text').xpath('node()').extract())
+        nodes.extend(resp.css('.article_content').xpath('node()').extract())
 
         for elem in nodes:
             sel = scrapy.Selector(text=elem, type='html')

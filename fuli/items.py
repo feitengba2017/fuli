@@ -5,14 +5,6 @@ from fuli.tools import common
 from fuli.cleaner.work28 import Work28Extractor
 
 
-class NewsItem(scrapy.Item):
-    content = scrapy.Field()
-    img_src = scrapy.Field()
-    video_src = scrapy.Field()
-    script_src = scrapy.Field()
-    embed_html = scrapy.Field()
-
-
 class ArticleItemLoader(ItemLoader):
     # 自定义itemloader,取列表中第一个
     default_output_processor = TakeFirst()
@@ -27,5 +19,5 @@ class Work28(scrapy.Item):
     url = scrapy.Field()
     datatime = scrapy.Field()
     content = scrapy.Field(
-        input_processor=MapCompose(Work28Extractor.process_item)
+        input_processor=MapCompose(Work28Extractor().process_item)
     )
