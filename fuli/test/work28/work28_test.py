@@ -12,10 +12,8 @@ class Work28Test(BaseTest):
         url = ('')
         resp = self.local_repsonse('work28/test_page.html', url)
         item = self.extractor.process_item(resp)
-        self.assertTrue(item['title'])
-        self.assertTrue(item['category'])
-        self.assertTrue(item['content'])
         print(item)
+        self.assertTrue(item['content'])
         self.assertTrue(False)
         '''nosetests fuli.test.work28.work28_test:Work28Test'''
 

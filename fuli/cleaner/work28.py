@@ -43,7 +43,6 @@ class Work28Extractor(BaseExtractor):
                     count=vcount)
             elif sel.css('H1,H2,H3,H4,H5,ul,ol,li'):
                 contents.append(remove_tags(elem, which_ones=('a',)))
-
             elif sel.css('p,div'):
                 self.parse_paragraph(sel, contents)
 
