@@ -1,4 +1,3 @@
-import re
 import scrapy
 from w3lib.html import remove_tags
 from .base_extractor import BaseExtractor
@@ -9,7 +8,7 @@ from fuli.newitem import NewsItem
 class Work28Extractor(BaseExtractor):
 
     def __init__(self):
-        self.skip_css = '#ad'
+        self.skip_css = '#ad,.shareBox,#cambrian0'
 
     def parse_article_content(self, resp):
         contents = []
@@ -29,7 +28,6 @@ class Work28Extractor(BaseExtractor):
                 icount = self.parse_image(
                     selector=sel,
                     src='img',
-                    src_attr='@data-custom-lazy-loader|@src|@data-lazy-loader',
                     content=contents,
                     resource=images,
                     count=icount)
