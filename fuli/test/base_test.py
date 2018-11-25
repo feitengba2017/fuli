@@ -17,5 +17,4 @@ class BaseTest(unittest.TestCase):
             file_path = text
 
         file_content = open(file_path, 'r').read()
-        response = HtmlResponse(url=url, request=request, body=file_content, encoding="utf-8")
-        return response
+        return file_content

@@ -3,6 +3,7 @@ from w3lib.html import remove_tags
 from .base_extractor import BaseExtractor
 from .utils import SCRIPT_PLACEHOLDER
 from fuli.newitem import NewsItem
+from scrapy.http import HtmlResponse
 
 
 class Work28Extractor(BaseExtractor):
@@ -52,6 +53,7 @@ class Work28Extractor(BaseExtractor):
                 'embed': embeds, 'script': scripts}
 
     def process_item(self, resp):
+        resp = scrapy.Selector(text=resp, type='html')
         item = NewsItem()
         res = self.parse_article_content(resp)
         item['content'] = res['content']

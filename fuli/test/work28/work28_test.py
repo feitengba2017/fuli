@@ -1,6 +1,7 @@
 import unittest
 from ..base_test import BaseTest
 from fuli.cleaner.work28 import Work28Extractor
+import json
 
 
 class Work28Test(BaseTest):
